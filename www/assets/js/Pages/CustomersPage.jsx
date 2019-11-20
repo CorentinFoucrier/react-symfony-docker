@@ -6,11 +6,18 @@ import PaginationCompoment from '../Compoments/PaginationCompoment';
 const CustomersPage = (props) => {
     const [Customer, setCustomer] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const [search, setSearch] = useState("");
 
     const itemsPerPage = 10;
-
+    
     const onPageChange = (page) => setCurrentPage(page);
-    const paginatedCompoment = PaginationCompoment.getData(Customer, currentPage, itemsPerPage);
+    const filteredCustomers = Customer.filter(customer => 
+        customer.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        customer.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        customer.email.toLowerCase().includes(search.toLowerCase())
+    );
+    const paginatedCompoment = PaginationCompoment.getData(filteredCustomers, currentPage, itemsPerPage);
+
 
     useEffect(() => {
         Axios.get('http://localhost:8282/api/customers')
@@ -32,9 +39,20 @@ const CustomersPage = (props) => {
         });
     }
 
+    const handleSearch = ({currentTarget}) => {
+        setSearch(currentTarget.value);
+        setCurrentPage(0);
+    }
+
     return (
         <>
             <h1>Liste des clients</h1>
+            <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                    <span className="input-group-text"><i className="fas fa-search"></i></span>
+                </div>
+                <input className="form-control" type="text" value={search} onChange={handleSearch} placeholder="Rechercher..." />
+            </div>
             <table className="table table-striped table-bordered">
                 <thead className="thead-dark">
                     <tr>
@@ -52,7 +70,7 @@ const CustomersPage = (props) => {
                     <tr key={customer.id}>
                         <td>{customer.id}</td>
                         <td>
-                            <a href="1">{customer.firstName} {customer.lastName}</a>
+                            <a href={customer.id}>{customer.firstName} {customer.lastName}</a>
                         </td>
                         <td>{customer.email}</td>
                         <td>{customer.company}</td>
@@ -80,7 +98,7 @@ const CustomersPage = (props) => {
             </table>
             <PaginationCompoment currentPage={currentPage}
                 itemsPerPage={itemsPerPage}
-                length={Customer.length}
+                length={filteredCustomers.length}
                 onPageChange={onPageChange} />
         </>
     );

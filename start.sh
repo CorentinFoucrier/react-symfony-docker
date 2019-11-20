@@ -20,7 +20,8 @@ docker exec $CONTAINER_NAME /bin/sh -c 'cd /var/www/ && php bin/console doctrine
 echo
 echo "#-----------------------------------------------------------"
 echo "#"
-echo "# Please check your browser at http://localhost:$APP_PORT   "
+echo "# Please check your browser at http://localhost:$APP_PORT"
+echo "# And do 'yarn dev --watch' in the constainer $CONTAINER_NAME"
 echo "#"
 echo "#-----------------------------------------------------------"
 echo
