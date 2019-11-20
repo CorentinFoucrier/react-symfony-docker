@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Axios from 'axios';
 import {useState,useEffect} from 'react';
 import PaginationCompoment from '../Compoments/PaginationCompoment';
+import CustomersApi from '../Services/CustomersApi';
 
 const CustomersPage = (props) => {
     const [Customer, setCustomer] = useState([]);
@@ -18,25 +19,31 @@ const CustomersPage = (props) => {
     );
     const paginatedCompoment = PaginationCompoment.getData(filteredCustomers, currentPage, itemsPerPage);
 
+    const fetchCustomers = async () => {
+        try {
+            const data = await CustomersApi.findAll()
+                .then(data => setCustomer(data))
+                .catch(error => console.log(error.response));
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
 
     useEffect(() => {
-        Axios.get('http://localhost:8282/api/customers')
-        .then(response => response.data['hydra:member'])
-        .then(data => setCustomer(data))
-        .catch(error => console.log(error.response));
+        fetchCustomers();
     }, []);
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         const originalCustomers = [...Customer];
 
         setCustomer(Customer.filter(customer => customer.id !== id));
 
-        Axios.delete('http://localhost:8282/api/customers/'+id)
-        .then(response => console.log(response))
-        .catch( error => {
+        try {
+            const data = await CustomersApi.findAll();
+            setCustomer(originalCustomers);
+        } catch (error) {
             console.log(error.response);
-            setCustomer(originalCustomers)
-        });
+        }
     }
 
     const handleSearch = ({currentTarget}) => {
