@@ -4,7 +4,7 @@ const PaginationCompoment = ({currentPage, itemsPerPage, length, onPageChange}) 
     const pageCount = Math.ceil(length / itemsPerPage);
     const pages = [];
 
-    for (let i = 0; i < pageCount; i++) {
+    for (let i = 0; i <= pageCount; i++) {
         pages.push(i);
     }
 

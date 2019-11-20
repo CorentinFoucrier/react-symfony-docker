@@ -39,7 +39,7 @@ const CustomersPage = (props) => {
         setCustomer(Customer.filter(customer => customer.id !== id));
 
         try {
-            const data = await CustomersApi.findAll();
+            const data = await CustomersApi.delete(id);
             setCustomer(originalCustomers);
         } catch (error) {
             console.log(error.response);

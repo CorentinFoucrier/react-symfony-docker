@@ -14,7 +14,7 @@ const Navbar = (props) => {
                         <a className="nav-link" href="/#/customers">Clients <i className="fas fa-user-friends"></i></a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Factures <i className="fas fa-file-invoice-dollar"></i></a>
+                        <a className="nav-link" href="/#/invoices">Factures <i className="fas fa-file-invoice-dollar"></i></a>
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
