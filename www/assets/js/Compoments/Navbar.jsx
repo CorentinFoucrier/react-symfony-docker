@@ -22,7 +22,7 @@ const Navbar = (props) => {
                     <a className="nav-link" href="#"><button className="btn btn-dark">Inscription <i className="fas fa-sign-in-alt"></i></button></a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#"><button className="btn btn-success">Connexion <i className="fas fa-unlock-alt"></i></button></a>
+                        <a className="nav-link" href="/#/login"><button className="btn btn-success">Connexion <i className="fas fa-unlock-alt"></i></button></a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#"><button className="btn btn-danger">Deconnexion <i className="fas fa-sign-out-alt"></i></button></a>

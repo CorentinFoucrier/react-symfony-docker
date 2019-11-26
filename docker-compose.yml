@@ -1,18 +1,7 @@
 version: '3'
 
 services:
-  react.mysql:
-    container_name: ${CONTAINER_MYSQL}
-    restart: unless-stopped
-    image: mysql:5.6
-    networks:
-      - react
-    env_file:
-      - .env
-
   react.app:
-    depends_on:
-      - react.mysql
     container_name: ${CONTAINER_NAME}
     restart: always
     build: ./docker
