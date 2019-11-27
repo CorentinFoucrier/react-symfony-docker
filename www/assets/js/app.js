@@ -6,6 +6,7 @@ import HomePage from './Compoments/HomePage';
 import CustomersPage from './Pages/CustomersPage';
 import InvoicesPage from './Pages/InvoicesPage';
 import LoginPage from './Pages/LoginPage';
+import AuthApi from './Services/AuthApi';
 
 require('../css/app.css');
 
