@@ -1,17 +1,17 @@
 import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
+function setAxiosToken(token) {
+    Axios.defaults.headers['Authorization'] = 'Bearer ' + window.localStorage.getItem('authToken');
+}
+
 function setup() {
     const token = window.localStorage.getItem('authToken');
     if (token) {
-        const jwtData = jwtDecode(token);
-        if (jwtData.exp * 1000 > new Date().getTime()) {
-            Axios.defaults.headers['Authorization'] = 'Bearer ' + window.localStorage.getItem('authToken');
-        } else {
-            logout();
+        const {exp: expiration} = jwtDecode(token);
+        if (expiration * 1000 > new Date().getTime()) {
+            setAxiosToken(token);
         }
-    } else {
-        logout();
     }
 }
 
@@ -24,6 +24,20 @@ function authenticate(credentials) {
 
             return true;
         });
+}
+
+function isAuthenticate() {
+    const token = window.localStorage.getItem('authToken');
+    if (token) {
+        const {exp: expiration} = jwtDecode(token);
+        if (expiration * 1000 > new Date().getTime()) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 function logout() {

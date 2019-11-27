@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import AuthApi from '../Services/AuthApi';
 
-const LoginPage = (props) => {
+const LoginPage = ({onLogin, history}) => {
     const [credentials, setCredentials] = useState({
         'username' : '',
         'password' : ''
@@ -22,6 +22,8 @@ const LoginPage = (props) => {
         try {
             await AuthApi.authenticate(credentials);
             setError("");
+            onLogin(true);
+            history.replace('/customers');
         } catch (error) {
             setError("Infos incorrects");
         }
