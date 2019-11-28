@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
 import {useState,useEffect} from 'react';
-import PaginationCompoment from '../Compoments/PaginationCompoment';
+import PaginationCompoment from '../Components/PaginationCompoment';
 import CustomersApi from '../Services/CustomersApi';
 
 const CustomersPage = (props) => {

@@ -1,33 +1,40 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter,Switch,Route,withRouter,Redirect} from 'react-router-dom';
-import Navbar from './Compoments/Navbar';
-import HomePage from './Compoments/HomePage';
+import {HashRouter,Switch,Route,withRouter} from 'react-router-dom';
+import Navbar from './Components/Navbar';
+import HomePage from './Pages/HomePage';
 import CustomersPage from './Pages/CustomersPage';
 import InvoicesPage from './Pages/InvoicesPage';
 import LoginPage from './Pages/LoginPage';
 import AuthApi from './Services/AuthApi';
+import AuthContext from './Contexts/AuthConext';
+import PrivateRoute from './Components/PrivateRoute';
 
 require('../css/app.css');
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(AuthApi.isAuthenticated)
+    const [isAuthenticated, setIsAuthenticated] = useState(AuthApi.isAuthenticated);
     const NavbarWithRouter = withRouter(Navbar);
 
-    const PrivateRoute = ({path, isAuthenticated, component}) => isAuthenticated ? (<Route path={path} component={component} />) : (<Redirect to="/login" />);
+    const contextValue = {
+        isAuthenticated,
+        setIsAuthenticated
+    }
 
     return (
-        <HashRouter>
-            <NavbarWithRouter isAuthenticated={isAuthenticated} onLogout={setIsAuthenticated} />
-            <div className="container p-5">
-                <Switch>
-                    <PrivateRoute path='/customers' isAuthenticated={isAuthenticated} component={CustomersPage} />
-                    <PrivateRoute path='/invoices' isAuthenticated={isAuthenticated} component={InvoicesPage} />
-                    <Route path='/login' render={ props => <LoginPage onLogin={setIsAuthenticated} {...props} /> } />
-                    <Route path='/' component={HomePage} />
-                </Switch>
-            </div>
-        </HashRouter>
+        <AuthContext.Provider value={contextValue}>
+            <HashRouter>
+                <NavbarWithRouter />
+                <div className="container p-5">
+                    <Switch>
+                        <PrivateRoute path='/customers' component={CustomersPage} />
+                        <PrivateRoute path='/invoices' component={InvoicesPage} />
+                        <Route path='/login' component={LoginPage} />
+                        <Route path='/' component={HomePage} />
+                    </Switch>
+                </div>
+            </HashRouter>
+        </AuthContext.Provider>
     );
 }
 // Va chercher la div id="app" dans le DOM

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import React, { useState, useContext } from 'react';
 import AuthApi from '../Services/AuthApi';
+import AuthContext from './contexts/AuthConext';
 
-const LoginPage = ({onLogin, history}) => {
+const LoginPage = ({history}) => {
+    
     const [credentials, setCredentials] = useState({
         'username' : '',
         'password' : ''

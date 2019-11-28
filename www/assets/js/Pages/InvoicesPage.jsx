@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import PaginationCompoment from '../Compoments/PaginationCompoment';
+import React, { useState, useContext } from 'react';
+import PaginationCompoment from '../Components/PaginationCompoment';
 import moment from 'moment';
 import InvoicesApi from '../Services/InvoicesApi';
 
-const InvoicesPage = (props) =>
-{
+const InvoicesPage = ({history}) => {
     const [invoices, setInvoices] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [search, setsearch] = useState("");
