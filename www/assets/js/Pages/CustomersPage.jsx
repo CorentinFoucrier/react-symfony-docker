@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
-import Axios from 'axios';
-import {useState,useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import PaginationCompoment from '../Components/PaginationCompoment';
 import CustomersApi from '../Services/CustomersApi';
 
@@ -53,7 +52,10 @@ const CustomersPage = (props) => {
 
     return (
         <>
-            <h1>Liste des clients</h1>
+            <div className="d-flex justify-content-between align-items-center">
+                <h1>Liste des clients</h1>
+                <Link to="customer/new" className="btn btn-primary">Créer un client</Link>
+            </div>
             <div className="input-group mb-3">
                 <div className="input-group-prepend">
                     <span className="input-group-text"><i className="fas fa-search"></i></span>
@@ -77,7 +79,7 @@ const CustomersPage = (props) => {
                     <tr key={customer.id}>
                         <td>{customer.id}</td>
                         <td>
-                            <a href={customer.id}>{customer.firstName} {customer.lastName}</a>
+                            <Link to={"/customer/"+customer.id}>{customer.firstName} {customer.lastName}</Link>
                         </td>
                         <td>{customer.email}</td>
                         <td>{customer.company}</td>

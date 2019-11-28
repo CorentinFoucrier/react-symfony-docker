@@ -1,17 +1,21 @@
 import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
-function setAxiosToken(token) {
+function setAxiosToken() {
     Axios.defaults.headers['Authorization'] = 'Bearer ' + window.localStorage.getItem('authToken');
 }
 
 function setup() {
     const token = window.localStorage.getItem('authToken');
     if (token) {
-        const {exp: expiration} = jwtDecode(token);
-        if (expiration * 1000 > new Date().getTime()) {
-            setAxiosToken(token);
+        const jwtData = jwtDecode(token);
+        if (jwtData.exp * 1000 > new Date().getTime()) {
+            setAxiosToken();
+        } else {
+            logout();
         }
+    } else {
+        logout();
     }
 }
 
@@ -20,13 +24,12 @@ function authenticate(credentials) {
         .then(response => response.data.token)
         .then(token => {
             window.localStorage.setItem('authToken', token);
-            Axios.defaults.headers['Authorization'] = 'Bearer ' + window.localStorage.getItem('authToken');
-
+            setAxiosToken();
             return true;
         });
 }
 
-function isAuthenticate() {
+function isAuthenticated() {
     const token = window.localStorage.getItem('authToken');
     if (token) {
         const {exp: expiration} = jwtDecode(token);
@@ -45,4 +48,4 @@ function logout() {
     delete Axios.defaults.headers['Authorization'];
 }
 
-export default { authenticate, logout }
+export default { authenticate, logout, setup, isAuthenticated }

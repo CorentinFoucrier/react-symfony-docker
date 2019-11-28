@@ -1,16 +1,23 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter,Switch,Route,withRouter} from 'react-router-dom';
+/* Services */
+import AuthApi from './Services/AuthApi';
+/* Components */
+import PrivateRoute from './Components/PrivateRoute';
 import Navbar from './Components/Navbar';
-import HomePage from './Pages/HomePage';
+/* Pages */
 import CustomersPage from './Pages/CustomersPage';
 import InvoicesPage from './Pages/InvoicesPage';
+import CustomerPage from './Pages/CustomerPage';
 import LoginPage from './Pages/LoginPage';
-import AuthApi from './Services/AuthApi';
-import AuthContext from './Contexts/AuthConext';
-import PrivateRoute from './Components/PrivateRoute';
+import HomePage from './Pages/HomePage';
+/* Contexts */
+import AuthContext from './Contexts/AuthContext';
 
 require('../css/app.css');
+
+AuthApi.setup();
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(AuthApi.isAuthenticated);
@@ -28,6 +35,7 @@ const App = () => {
                 <div className="container p-5">
                     <Switch>
                         <PrivateRoute path='/customers' component={CustomersPage} />
+                        <PrivateRoute path='/customer/:id' component={CustomerPage} />
                         <PrivateRoute path='/invoices' component={InvoicesPage} />
                         <Route path='/login' component={LoginPage} />
                         <Route path='/' component={HomePage} />

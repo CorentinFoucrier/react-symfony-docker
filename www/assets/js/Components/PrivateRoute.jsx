@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Route, Redirect} from 'react-router-dom';
-import AuthConext from '../Contexts/AuthConext';
+import AuthContext from '../Contexts/AuthContext';
 
 const PrivateRoute = ({path, component}) => {
-    const {isAuthenticated} = useContext(AuthConext);
+    const {isAuthenticated} = useContext(AuthContext);
 
     return isAuthenticated
     ? ( <Route path={path} component={component} /> )
