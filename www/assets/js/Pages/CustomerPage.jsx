@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import Field from '../Components/Forms/Fields';
 import {Link} from 'react-router-dom';
 import Axios from 'axios';
+import CustomersApi from '../Services/CustomersApi';
 
-const CustomerPage = (props) => {
+const CustomerPage = ({match, history}) => {
     const [customer, setCustomer] = useState({
         lastName: "",
         firstName: "",
@@ -11,7 +12,7 @@ const CustomerPage = (props) => {
         company: ""
     })
 
-    const {id='new'} = props.match.params;
+    const {id='new'} = match.params;
     const [editing, setEditing] = useState(false);
 
     useEffect(() => {
@@ -29,17 +30,18 @@ const CustomerPage = (props) => {
         event.preventDefault();
         try {
             if (editing) {
-                await Axios.put('http://localhost:8282/api/customers'+id, customer)
+                await CustomersApi.update(id, customer);
             } else {
-                await Axios.post('http://localhost:8282/api/customers', customer)
+                await CustomersApi.create(customer);
             }
             setError({});
-            props.history.replace('/customers');
-        } catch (error) {
-            if (error.response.data.violations) {
+            history.replace('/customers');
+        } catch ({response}) {
+            const {violations} = response.data;
+            if (violations) {
                 const apiErrors = {};
-                error.response.data.violations.map((violation) => {
-                    apiErrors[violation.propertyPath] = violation.message;
+                violations.map(({propertyPath, message}) => {
+                    apiErrors[propertyPath] = message;
                 });
                 setError(apiErrors);
             }
